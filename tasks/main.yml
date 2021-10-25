@@ -1,0 +1,27 @@
+---
+- name: "INIT | Set timezone to {{ time_zone }}"
+  community.general.timezone:
+    name: "{{ time_zone }}"
+- name: INIT | Show message about install updates
+  debug:
+    msg:
+      - "*==============================*"
+      - "* SERVER START INSTALL UPDATES *"
+      - "*  THE TASK WILL BE PERFORMED  *"
+      - "*       FOR A LONG TIME        *"
+      - "*==============================*"
+- name: "INIT | Install updates"
+  yum:
+    name: "*"
+    state: latest
+- name: INIT | Show message about reboot
+  debug:
+    msg:
+      - "*========================*"
+      - "* SERVER SENT FOR REBOOT *"
+      - "*========================*"
+  when: need_reboot
+- name: INIT | Reboot server
+  reboot:
+    reboot_timeout: 3600
+  when: need_reboot
